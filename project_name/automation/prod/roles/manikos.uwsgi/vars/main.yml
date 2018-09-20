@@ -1,0 +1,9 @@
+---
+
+UWSGI_DIR_PATH: "{{ WEBAPPS_DIR_PATH }}/uwsgi"
+UWSGI_SOCKET_PATH: /tmp/uwsgi
+UWSGI_SOCKET_NAME: uwsgi.sock
+UWSGI_STATS_SOCKET_NAME: stats_uwsgi.sock
+UWSGI_INI_NAME: uwsgi.ini
+UWSGI_SYSTEMD_CONF_NAME: uwsgi.service
+SYSTEMD_SERVICES_PATH: /etc/systemd/system

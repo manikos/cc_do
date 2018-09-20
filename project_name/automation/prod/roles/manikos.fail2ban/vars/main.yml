@@ -1,0 +1,4 @@
+---
+
+FAIL2BAN_DIR_PATH: "/etc/fail2ban"
+FAIL2BAN_JAIL_FILENAME: jail.local

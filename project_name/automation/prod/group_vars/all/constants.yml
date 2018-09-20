@@ -1,0 +1,23 @@
+---
+
+# TO BE CHANGED!
+PYTHON_VERSION: 3.6.5
+EMAIL_FOR_FAIL2BAN: email_for_fail2ban@for.attack.notication  # used in jail.local.j2
+NETLOC_NAME: ''  # TODO: URL DOMAIN HERE i.e "example"
+NETLOC_TLD: ''  # TODO: TLD here i.e "com" or "net" etc
+
+
+# NOT TO BE CHANGED
+NETLOC: '{% templatetag openvariable %} NETLOC_NAME {% templatetag closevariable %}.{% templatetag openvariable %} NETLOC_TLD {% templatetag closevariable %}'
+DOMAINS:
+  - '{% templatetag openvariable %} NETLOC {% templatetag closevariable %}'
+  - 'www.{% templatetag openvariable %} NETLOC {% templatetag closevariable %}'
+
+APP: {{ project_name }}
+PROJ_NAME: "{% templatetag openvariable %} APP {% templatetag closevariable %}"
+APP_NAME: "{% templatetag openvariable %} APP {% templatetag closevariable %}_app"
+WEBAPPS_DIR_PATH: "{% templatetag openvariable %} ansible_env.HOME {% templatetag closevariable %}/webapps"  # /home/username/webapps/
+APP_DIR_PATH: "{% templatetag openvariable %} WEBAPPS_DIR_PATH {% templatetag closevariable %}/{% templatetag openvariable %} APP_NAME {% templatetag closevariable %}"  # /home/username/webapps/myapp_app/
+APP_PROJ_PATH: "{% templatetag openvariable %} APP_DIR_PATH {% templatetag closevariable %}/{% templatetag openvariable %} PROJ_NAME {% templatetag closevariable %}"  # /home/username/webapps/myapp_app/my_app/
+
+ROOT: root

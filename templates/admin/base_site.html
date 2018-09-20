@@ -1,0 +1,20 @@
+{% templatetag openblock %} extends 'admin/base_site.html' {% templatetag closeblock %}
+
+{% templatetag openblock %} load static {% templatetag closeblock %}
+{% templatetag openblock %} load i18n {% templatetag closeblock %}
+
+{% templatetag opencomment %} Content at top {% templatetag closecomment %}
+{% templatetag openblock %} block branding {% templatetag closeblock %}
+	<h1 id="site-name">
+		{% templatetag opencomment %} TODO: Change path to logo image (maybe the styling too) {% templatetag closecomment %}
+		<a href="{% templatetag openblock %} url 'admin:index' {% templatetag closeblock %}">
+			<img class="brand_img" src="{% templatetag openblock %} static 'path/to/logo.png'{% templatetag closeblock %}" width="50" height="50" alt="logo" style="margin:-5px 10px 0 0;">
+			<span>{% templatetag openblock %} trans '{{ project_name|capfirst }} Admin' {% templatetag closeblock %}</span>
+		</a>
+	</h1>
+{% templatetag openblock %} endblock {% templatetag closeblock %}
+
+{% templatetag opencomment %} Content before model listing {% templatetag closecomment %}
+{% templatetag openblock %} block content_title {% templatetag closeblock %}
+	<h1>{% templatetag openblock %} trans 'Customize your website' {% templatetag closeblock %}</h1>
+{% templatetag openblock %} endblock {% templatetag closeblock %}

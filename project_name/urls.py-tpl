@@ -1,0 +1,47 @@
+from django.urls import path, re_path, include
+from django.conf.urls.i18n import i18n_patterns
+from django.contrib import admin
+# from django.contrib.sitemaps.views import sitemap
+from django.conf import settings
+
+# from .sitemap import SITEMAPS
+
+
+# i18n prefix URLs
+# Uncomment below to enable language change ability
+# urlpatterns = [
+#     path("i18n/", include("django.conf.urls.i18n"))
+# ]
+
+# If you want the admin interface URL to be prefixed by language code
+# change the list below to:
+# urlpatterns = i18n_patterns(path(...), path(...), ...)
+urlpatterns = [
+    path("%s/" % settings.MY_ADMIN_URL, admin.site.urls),
+]
+
+# Uncomment below to support sitemap
+# urlpatterns += [
+#    re_path(r"^sitemap\.xml/$",
+#            sitemap,
+#            {"sitemaps": SITEMAPS, "template_name": "sitemap.xml"},
+#            name="django.contrib.sitemaps.views.sitemap"
+#            )
+# ]
+
+# Uncomment below to serve uploaded files and custom error pages
+if settings.DEBUG:
+    from django.views.static import serve
+    from django.views.defaults import page_not_found, server_error
+    urlpatterns += [
+        re_path(r"^media/(?P<path>.*)", serve, {"document_root": settings.MEDIA_ROOT}),
+		re_path(
+            r"^favicon/(?P<path>.*)", serve, {"document_root": settings.ROOT("favicon")}
+        ),
+    ]
+
+    urlpatterns += [
+        path("404/", page_not_found, {"exception": ""}),
+        path("500/", server_error),
+    ]
+

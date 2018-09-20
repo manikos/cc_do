@@ -1,0 +1,37 @@
+---
+
+- name: Install postgres required packages
+  apt: name={{ item }} update_cache=yes
+  with_items:
+    - postgresql
+    - libpq-dev
+    - python-psycopg2
+    - postgresql-client-common
+    - postgresql-client
+    - postgresql-contrib
+    # - libjpeg-dev
+    # - libjpeg62
+    # - libjpeg62-dev
+    # - zlib1g-dev
+    # - libfreetype6-dev
+
+- name: Ensure database is created
+  postgresql_db:
+    name: "{{ DB_NAME }}"
+  become_user: postgres
+
+- name: Create new PostgreSQL user
+  postgresql_user:
+    db: "{{ DB_NAME }}"
+    name: "{{ db_user }}"
+    password: "{{ db_pwd | postgres_shadow(db_user) }}"
+    encrypted: yes
+    priv: ALL
+    role_attr_flags: NOSUPERUSER
+  become_user: postgres
+
+- name: Change database owner
+  postgresql_db:
+    name: "{{ DB_NAME }}"
+    owner: "{{ db_user }}"
+  become_user: postgres

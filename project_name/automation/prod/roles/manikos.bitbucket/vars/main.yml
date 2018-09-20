@@ -1,0 +1,7 @@
+---
+
+BB_REPO_NAME: "{{ PROJ_NAME }}"
+BB_ACCESS_KEYS_DIR_PATH: "{{ APP_DIR_PATH }}/.access_keys"
+BB_PRIVATE_KEY_NAME: bb_rsa
+BB_PUBLIC_KEY_NAME: bb_rsa.pub
+BB_REPO_URL: "git@bitbucket.org:{{ bb_user }}/{{ BB_REPO_NAME }}.git"

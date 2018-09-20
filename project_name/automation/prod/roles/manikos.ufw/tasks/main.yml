@@ -1,0 +1,13 @@
+---
+
+- name: Allow SSH in firewall
+  ufw: rule=allow port=22
+
+- name: Allow HTTP connections for Web server
+  ufw: rule=allow port=80
+
+- name: Allow HTTPS connections for Web server
+  ufw: rule=allow port=443
+
+- name: Enable ufw firewall
+  ufw: state=enabled

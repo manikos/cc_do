@@ -1,0 +1,4 @@
+---
+
+DB_NAME: "{{ APP }}"
+# DB_URL: postgresql://{{ user_name }}:{{ db_pwd }}@localhost/{{ APP_NAME }}

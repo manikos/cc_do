@@ -1,0 +1,6 @@
+---
+
+- name: Install pipenv (under ~/.local/bin/)
+  pip:
+    name: pipenv
+    extra_args: --user

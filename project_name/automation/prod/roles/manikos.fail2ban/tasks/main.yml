@@ -1,0 +1,12 @@
+---
+
+- name: Install fail2ban
+  apt: name=fail2ban update_cache=yes
+
+- name: Configure fail2ban
+  template:
+    src: "jail.local.j2"
+    dest: "{{ FAIL2BAN_DIR_PATH }}/{{ FAIL2BAN_JAIL_FILENAME }}"
+    owner: "{{ ROOT }}"
+    group: "{{ ROOT }}"
+    mode: "0644"

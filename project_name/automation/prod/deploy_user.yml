@@ -1,0 +1,9 @@
+---
+
+- name: Deploy app
+  hosts: all
+  remote_user: "{{ user_name }}"
+  vars:
+    ansible_become_pass: "{{ user_pwd }}"
+  roles:
+    - { role: manikos.app, when: ansible_os_family == 'Debian' }

@@ -1,0 +1,62 @@
+# the upstream component nginx needs to connect to
+#upstream django {
+#    server unix://{{ UWSGI_SOCKET_PATH }}/{{ UWSGI_SOCKET_NAME }};
+#}
+
+
+server {
+    listen 80;
+
+    # $host is the request's HOST header.
+    # if $host not equal to domain below, nginx will immediately return 444 without hitting uWSGI.
+    # if ($host !~* ^(?:www\.)?{{ NETLOC_NAME }}\.{{ NETLOC_TLD }}$ ) { return 444; }
+
+    # server_name {% for domain in DOMAINS %}{{ domain }}{% if not loop.last %} {% endif %}{% endfor %};
+    server_name {% for ip in groups['constants'] %}{{ ip }}{% endfor %};
+    charset utf-8;
+
+    location = /robots.txt {
+		alias {{ APP_PROJ_PATH }}/robots.txt;
+		access_log off;
+		log_not_found off;
+	}
+
+    #location ~* .(woff|woff2|eot|ttf|svg|mp4|webm|jpg|JPG|jpeg|png|gif|ico|css|js)$ {
+    #    expires 365d;
+    #}
+    
+    location = /favicon {
+        alias {{ APP_PROJ_PATH }}/favicon;
+        access_log off;
+        log_not_found off;
+    }
+
+    location /media {
+        alias {{ APP_PROJ_PATH }}/media_root;
+        access_log off;
+        add_header Cache-Control "max-age=2592000";
+    }
+
+    location /static {
+        alias {{ APP_PROJ_PATH }}/static_root;
+        access_log off;
+        add_header Cache-Control "max-age=2592000";
+    }
+
+    # regex must be inside "" because of the {} use. Will match either /{{ APP }}-admin-ns/ or /el/{{ APP }}-admin-ns/ or /en/{{ APP }}-admin-ns/ etc.
+    location ~ "/([\w-]{2}\/)?{{ APP }}-admin-ns/" {
+        # apply rate limiting (defined in nginx.conf)
+        limit_req zone=admin burst=5;
+
+        uwsgi_pass unix://{{ UWSGI_SOCKET_PATH }}/{{ UWSGI_SOCKET_NAME }};
+        include uwsgi_params;
+    }
+
+    location / {
+        uwsgi_pass unix://{{ UWSGI_SOCKET_PATH }}/{{ UWSGI_SOCKET_NAME }};
+        include uwsgi_params;
+        add_header Cache-Control "max-age=0";
+        #uwsgi_pass django;
+    }
+
+}

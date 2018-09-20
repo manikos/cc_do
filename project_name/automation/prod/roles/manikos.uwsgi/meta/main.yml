@@ -1,0 +1,5 @@
+---
+
+  dependencies:
+    - manikos.nginx  # to inherit handlers
+    - manikos.django  # to inherit venv

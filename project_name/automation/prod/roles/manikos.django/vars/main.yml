@@ -1,0 +1,4 @@
+---
+
+APP_STATIC_PATH: "{{ APP_PROJ_PATH }}/static_root"  # /home/username/webapps/myapp_app/my_app/static_root/
+APP_MEDIA_PATH: "{{ APP_PROJ_PATH }}/media_root"    # /home/username/webapps/myapp_app/my_app/media_root/

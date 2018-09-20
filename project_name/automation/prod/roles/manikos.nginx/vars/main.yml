@@ -1,0 +1,7 @@
+---
+
+NGINX_USER: www-data
+NGINX_DIR_PATH: /etc/nginx
+NGINX_CONF_PATH: "{{ NGINX_DIR_PATH }}/nginx.conf"
+NGINX_SITES_AV: "{{ NGINX_DIR_PATH }}/sites-available"
+NGINX_SITES_EN: "{{ NGINX_DIR_PATH }}/sites-enabled"

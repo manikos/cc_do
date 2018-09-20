@@ -1,0 +1,5 @@
+---
+
+  dependencies:
+    - manikos.pyenv
+    - manikos.pipenv

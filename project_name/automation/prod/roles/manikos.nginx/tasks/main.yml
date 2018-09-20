@@ -1,0 +1,48 @@
+---
+
+- name: Install nginx
+  apt: name=nginx update_cache=yes
+
+- name: Get max number of concurrent processes per sec
+  shell: ulimit -n
+  args:
+    executable: /bin/bash
+  register: num_processes
+  changed_when: False  # read-only procedure, not need to appear as "changed"
+
+- name: Copy local nginx.conf to remote nginx.conf
+  template:
+    src: nginx.conf.j2
+    dest: "{{ NGINX_CONF_PATH }}"
+    owner: "{{ ROOT }}"
+    group: "{{ ROOT }}"
+    mode: 0644
+
+- name: Remove default nginx config from sites-enabled
+  file:
+    dest: "{{ NGINX_SITES_EN }}/default"
+    state: absent
+
+- name: Configure sites-available
+  template:
+    src: "nginx_sites_avail.j2"
+    dest: "{{ NGINX_SITES_AV }}/{{ APP }}"
+    owner: "{{ ROOT }}"
+    group: "{{ ROOT }}"
+    mode: "0644"
+
+- name: Symlink to sites-enabled
+  file:
+    src: "{{ NGINX_SITES_AV }}/{{ APP }}"
+    dest: "{{ NGINX_SITES_EN }}/{{ APP }}"
+    state: link
+  notify: "restart nginx"
+
+#- name: "Add nginx user ({{ NGINX_USER }}) to {{ user_name }} group"
+#  user:
+#    name: "{{ NGINX_USER }}"
+#    groups: "{{ user_name }}"
+#    append: yes
+#    createhome: no
+#  notify: "restart nginx"
+#  become: yes

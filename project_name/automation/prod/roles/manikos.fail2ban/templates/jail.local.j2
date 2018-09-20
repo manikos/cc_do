@@ -1,0 +1,15 @@
+[default]
+destemail  = {{ EMAIL_FOR_FAIL2BAN }}
+sender     = {{ user_name }}@{{ APP }}
+action     = %(action_mwl)s
+
+[sshd]
+enabled    = true
+port       = ssh
+filter     = sshd
+logpath    = %(sshd_log)s
+maxretry   = 6
+
+
+[nginx-http-auth]
+enabled = true

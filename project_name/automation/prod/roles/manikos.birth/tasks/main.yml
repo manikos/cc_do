@@ -1,0 +1,44 @@
+---
+
+- name: Install various packages
+  apt: name="{{ item }}" update_cache=yes
+  with_items:
+    - build-essential
+    - curl
+    - libssl-dev
+    - libbz2-dev
+    - libffi-dev
+    - libreadline-dev
+    - libsqlite3-dev
+    - libncurses5-dev
+    - libncursesw5-dev
+    - llvm
+    - sendmail
+    - tk-dev
+    - xz-utils
+    - wget
+
+- name: Modify sshd_config file as root
+  replace:
+    path: /etc/ssh/sshd_config
+    regexp: '^{{ item }} yes'
+    replace: '{{ item }} no'
+    backup: yes
+  with_items: [UsePAM, PermitRootLogin, PasswordAuthentication]
+
+- name: Create new user
+  user:
+    name: "{{ user_name }}"
+    password: "{{ user_pwd | password_hash('sha512', user_salt) }}"
+    skeleton: /etc/skel
+    shell: /bin/bash
+    groups: sudo
+    append: yes
+    createhome: yes
+    comment: "{{ user_comment }}"
+
+- name: Add remote authorized key
+  authorized_key:
+    user: "{{ user_name }}"
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+  notify: "restart ssh service"

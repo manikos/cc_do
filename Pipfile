@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+invoke = "*"
+requests = "*"
+pyyaml = "*"
+beauty-ocean = "*"
+
+[packages]
+Django = "*"
+Jinja2 = "*"
+django-jinja = "*"
+django-modeltranslation = "*"
+Pillow = "*"
+psycopg2-binary = "*"
+pytz = "*"
+uwsgi = "*"
+uwsgitop = "*"
+# django-vimage = "*"
+# django-progressiveimagefield = "*"
+# django_compressor = "*"
+
+[requires]
+python_version = "3.6"

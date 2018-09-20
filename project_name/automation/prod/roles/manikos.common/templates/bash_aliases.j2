@@ -1,0 +1,30 @@
+alias copy='xclip -sel clip'
+
+# After each push, run below command to update project
+gpom() {
+    # cd to project {{ PROJ_NAME }} dir
+    cd {{ APP_PROJ_PATH }}
+
+    # pull from origin the latest changes
+    ssh-agent bash -c 'ssh-add {{ BB_ACCESS_KEYS_DIR_PATH }}/{{ BB_PRIVATE_KEY_NAME }}; git pull origin master'
+
+    # install (any potential) requirements
+    pipenv install
+
+    # Run migrations
+    pipenv run python manage.py migrate
+
+    # Run collectstatic
+    pipenv run python manage.py collectstatic --noinput
+
+    # Restart uwsgi service (via systemd)
+    sudo systemctl restart uwsgi
+
+    # cd back to previous dir
+    cd -
+}
+
+export -f gpom
+
+#  DJANGO PROJECT SHORTCUTS
+alias createsuperuser='cd {{ APP_PROJ_PATH }} && pipenv run python manage.py createsuperuser'

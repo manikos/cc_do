@@ -1,0 +1,66 @@
+# my configuration uwsgi.ini file
+
+strict
+
+[uwsgi]
+
+##########################
+# DJANGO-RELATED SETTINGS
+##########################
+
+# the base directory of my project (full path)
+chdir           = {{ APP_PROJ_PATH }}
+
+# set an environment variable
+env             = DJANGO_SETTINGS_MODULE={{ PROJ_NAME }}.settings
+
+# Django's wsgi file (python dotted path)
+module          = {{ PROJ_NAME }}.wsgi
+
+# the virtualenv (full path)
+virtualenv      = {{ venv.stdout }}
+
+
+###########################
+# PROCESS-RELATED SETTINGS
+###########################
+
+# This is a boolean value, so either "memory-report = 1 | true" or just "memory-report" will work.
+memory-report
+
+# enable single-interpreter (because we're running a single application)
+single-interpreter
+
+# master process (boolean value)
+master
+
+# number of worker processes
+processes          = 3
+
+# the socket (use the full path to be safe)
+socket             = {{ UWSGI_SOCKET_PATH }}/{{ UWSGI_SOCKET_NAME }}
+
+# ... with appropriate permissions (the owner:group of the socket will be {{ user_name }}:{{ user_name }})
+chmod-socket       = 660
+
+# set uid, gid (who will run the process)
+uid                = {{ user_name }}
+gid                = {{ user_name }}
+
+# clear environment on exit
+vacuum             = true
+
+# respawn processes taking more than 20 seconds
+harakiri           = 20 
+
+# limit the project to 256 MB
+limit-as           = 256
+
+# respawn processes after serving 1000 requests
+max-requests       = 1000
+
+# Set a socket to read/write the statistics (stats). To inspect (assuming "pip install uwsgitop") do this: uwsgitop /path/to/stats_socket.sock
+stats              = {{ UWSGI_SOCKET_PATH }}/{{ UWSGI_STATS_SOCKET_NAME }}
+
+# support non-ASCII characters for uploaded files
+env                = LANG=en_US.UTF-8

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="{% templatetag openvariable %} translation.get_language() {% templatetag closevariable %}" dir="ltr">
+	<head>
+	    <meta charset="utf-8">
+		<meta name=viewport content="width=device-width, initial-scale=1">
+		<meta name='author' content='TODO: Author info here, i.e brand_name, brand@email.com'>
+		{% templatetag openblock %} block extra_meta {% templatetag closeblock %}{% templatetag openblock %} endblock {% templatetag closeblock %}
+	    <title>
+		    {% templatetag openblock %} block title {% templatetag closeblock %}
+		        {% templatetag openblock %} if page_title {% templatetag closeblock %}{% templatetag openvariable %} page_title {% templatetag closevariable %} | {% templatetag openblock %} endif {% templatetag closeblock %}{% templatetag openvariable %} SITE_TITLE {% templatetag closevariable %}
+	        {% templatetag openblock %} endblock {% templatetag closeblock %}
+	    </title>
+	    {% templatetag openblock %} block extra_styles {% templatetag closeblock %}{% templatetag openblock %} endblock {% templatetag closeblock %}
+	    <link rel="stylesheet" href="{% templatetag openvariable %} static('css/style.css') {% templatetag closevariable %}">
+	    
+	    <link rel="apple-touch-icon" type="image/png" href="/favicon/apple-touch-icon.png" sizes="180x180" >
+		<link rel="icon" type="image/png" href="/favicon/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="/favicon/favicon-16x16.png" sizes="16x16">
+		<link rel="manifest" href="/favicon/site.webmanifest">
+		<link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
+		<link rel="icon" href="/favicon/favicon.ico" type="image/x-icon">
+	</head>
+
+	<body>
+		{% templatetag openblock %} block content {% templatetag closeblock %} {% templatetag openblock %} endblock {% templatetag closeblock %}
+		{% templatetag openblock %} block extra_js {% templatetag closeblock %}{% templatetag openblock %} endblock {% templatetag closeblock %}
+	    <script src="{% templatetag openvariable %} static('js/main.js') {% templatetag closevariable %}"></script>
+	</body>
+</html>

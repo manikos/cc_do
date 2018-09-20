@@ -1,0 +1,61 @@
+---
+
+- name: Ensure ".access_keys/" directory exists
+  file:
+    path: "{{ BB_ACCESS_KEYS_DIR_PATH }}"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: 0700
+    state: directory
+
+- name: "Ensure that access keys exist (inside {{ BB_ACCESS_KEYS_DIR_PATH }})"
+  shell: "ssh-keygen -f {{ BB_ACCESS_KEYS_DIR_PATH }}/{{ BB_PRIVATE_KEY_NAME }} -N ''"
+  args:
+    executable: /bin/bash
+    creates: "{{ BB_ACCESS_KEYS_DIR_PATH }}/{{ BB_PRIVATE_KEY_NAME }}"
+  register: result
+
+- name: Read server's public key
+  shell: "cat {{ BB_ACCESS_KEYS_DIR_PATH }}/{{ BB_PUBLIC_KEY_NAME }}"
+  args:
+    executable: /bin/bash
+  register: public_key
+  when: "'Your identification has been saved in' in result.stdout"
+
+# Unfortunately as of Jan 2019, BitBucket API v2 has removed ability to read/add access keys.
+# Thus, the "pause" module (in order to do it manually via the web).
+- pause:
+    prompt: |
+      Go to your bitbucket repo settings --> Access keys and add the public key manually.
+      Below is the public key (SKIP the <host>@<repo_name> part AND any spaces):
+      {{ public_key.stdout | trim }}
+  when: "'Your identification has been saved in' in result.stdout"
+
+- name: Clone repo
+  git:
+    repo: "{{ BB_REPO_URL }}"
+    dest: "{{ APP_PROJ_PATH }}"
+    clone: yes
+    key_file: "{{ BB_ACCESS_KEYS_DIR_PATH }}/{{ BB_PRIVATE_KEY_NAME }}"
+    accept_hostkey: yes
+  when: "'Your identification has been saved in' in result.stdout"
+
+
+#- name: Check if deploy key already exists
+#  uri:
+#    url: "https://api.bitbucket.org/1.0/repositories/{{ bb_user }}/{{ BB_REPO_NAME }}/deploy-keys"
+#    method: GET
+#    user: "{{ bb_user }}"
+#    password: "{{ bb_pwd }}"
+#    force_basic_auth: yes
+#  register: key_exists
+
+#- name: "Upload server's public key to {{ BB_REPO_NAME }} repo as a deploy key"
+#  uri:
+#    url: "https://api.bitbucket.org/1.0/repositories/{{ bb_user }}/{{ BB_REPO_NAME }}/deploy-keys"
+#    method: POST
+#    user: "{{ bb_user }}"
+#    password: "{{ bb_pwd }}"
+#    force_basic_auth: yes
+#    body: "key={{ bb_public_key.stdout|urlencode }}&label={{ user_name }}_{{ BB_REPO_NAME }}"
+#  when: not key_exists.json

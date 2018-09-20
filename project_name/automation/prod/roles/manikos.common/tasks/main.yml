@@ -1,0 +1,44 @@
+---
+
+- name: "Colorize the prompt PS1 for {{ ROOT }} (make it bold red)"
+  lineinfile: dest="/{{ ROOT }}/.bashrc"
+              line="export PS1=\"\[\033[01;31m\]\u@\h\[\033[01;34m\] \w\$\[\033[00m\] \""
+  become: yes
+
+- name: "Colorize the prompt PS1 for {{ user_name }} (make it bold yellow)"
+  lineinfile: dest="{{ ansible_env.HOME }}/.bashrc"
+              line="export PS1=\"\[\033[01;33m\]\u@\h\[\033[01;34m\] \w\$\[\033[00m\] \""
+
+- name: Create .bash_aliases file
+  template:
+    src: bash_aliases.j2
+    dest: "{{ ansible_env.HOME }}/.bash_aliases"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: 0644
+
+- name: Create .vimrc file
+  copy:
+    src: vimrc
+    dest: "{{ ansible_env.HOME }}/.vimrc"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: 0644
+
+- name: "Create app dir and tmp dir"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: 0755
+  with_items:
+    - "{{ APP_DIR_PATH }}"
+    - "{{ TMP_DIR_PATH }}"
+  become: yes
+
+- name: Ensure locale el_GR.UTF-8 exists
+  locale_gen:
+    name: el_GR.UTF-8
+    state: present
+  become: yes

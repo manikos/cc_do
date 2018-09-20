@@ -1,0 +1,54 @@
+---
+
+# uwsgi[top] are assumed already installed from within project's Pipfile
+
+- name: Get venv name
+  shell: pipenv --venv
+  args:
+    chdir: "{{ APP_PROJ_PATH }}"
+    executable: /bin/bash
+  register: venv
+  failed_when: False
+  changed_when: False
+  environment:
+    PATH: "{{ PIPENV_DIR_PATH }}:{{ ansible_env.PATH }}"
+    PYENV_ROOT: "{{ PYENV_DIR_PATH }}"
+
+- name: "Create necessary uwsgi dirs"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: 0755
+  with_items:
+    - "{{ UWSGI_DIR_PATH }}"
+    - "{{ UWSGI_SOCKET_PATH }}"
+  become: yes
+
+- name: Configure uWSGI ini file
+  template:
+    src: uwsgi.ini.j2
+    dest: "{{ UWSGI_DIR_PATH }}/{{ UWSGI_INI_NAME }}"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    mode: 0644
+  become: yes
+
+- name: Configure uWSGI systemd conf file
+  template:
+    src: uwsgi.service.j2
+    dest: "{{ SYSTEMD_SERVICES_PATH }}/{{ UWSGI_SYSTEMD_CONF_NAME }}"
+    owner: "{{ ROOT }}"
+    group: "{{ ROOT }}"
+    mode: 0777
+  notify:
+    - restart uwsgi
+    - restart nginx
+  become: yes
+
+- name: enable uWSGI to start on boot
+  systemd:
+    name: uwsgi
+    enabled: yes
+  become: yes
