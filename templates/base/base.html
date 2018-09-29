@@ -2,10 +2,11 @@
 <html lang="{% templatetag openvariable %} translation.get_language() {% templatetag closevariable %}" dir="ltr">
 	<head>
 	    <meta charset="utf-8">
-		<meta name=viewport content="width=device-width, initial-scale=1">
+		<meta name=viewport content="width=device-width, initial-scale=1, viewport-fit=cover">
 		<meta name='author' content='TODO: Author info here, i.e brand_name, brand@email.com'>
 		{% templatetag openblock %} block extra_meta {% templatetag closeblock %}{% templatetag openblock %} endblock {% templatetag closeblock %}
 	    <title>
+	    	{# title should be around 55 characters #}
 		    {% templatetag openblock %} block title {% templatetag closeblock %}
 		        {% templatetag openblock %} if page_title {% templatetag closeblock %}{% templatetag openvariable %} page_title {% templatetag closevariable %} | {% templatetag openblock %} endif {% templatetag closeblock %}{% templatetag openvariable %} SITE_TITLE {% templatetag closevariable %}
 	        {% templatetag openblock %} endblock {% templatetag closeblock %}
@@ -27,3 +28,4 @@
 	    <script src="{% templatetag openvariable %} static('js/main.js') {% templatetag closevariable %}"></script>
 	</body>
 </html>
+
