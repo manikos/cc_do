@@ -154,7 +154,8 @@ TEMPLATES = [
                 'messages': 'django.contrib.messages.api.get_messages',
                 'translation': 'django.utils.translation',
                 'settings': 'django.conf.settings',
-                'm': '{{ project_name }}.jinja2.methods',
+                'lang_info': '{{ project_name }}.jinja2.methods.lang_info',  # optional
+                'app_urls': '{{ project_name }}.jinja2.methods.app_urls',  # optional
             },
             # values here MUST be path to a callable (i.e function)
             'filters': {
