@@ -20,7 +20,13 @@ def here(*path):
 
 def root_is(*path):
     return join(abspath(PROJECT_ROOT), *path)
-    
+
+
+PROJECT_ROOT = here("..", "..")
+ROOT = root_is
+with open(ROOT('{{ project_name }}/settings/secret.json')) as f:
+    secrets = loads(f.read())
+
 
 def get_secret(setting, secret=secrets):
     """Get the secret variable or return explicit exception."""
@@ -29,12 +35,6 @@ def get_secret(setting, secret=secrets):
     except KeyError:
         error_msg = 'Set the {0} environment variable'.format(setting)
         raise ImproperlyConfigured(error_msg)
-
-
-PROJECT_ROOT = here("..", "..")
-ROOT = root_is
-with open(ROOT('{{ project_name }}/settings/secret.json')) as f:
-    secrets = loads(f.read())
 
 
 PROJECT_NAME = '{{ project_name }}'
