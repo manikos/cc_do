@@ -13,7 +13,7 @@
 	    </title>
 	    {% templatetag openblock %} block extra_styles {% templatetag closeblock %}{% templatetag openblock %} endblock {% templatetag closeblock %}
 	    <link rel="stylesheet" href="{% templatetag openvariable %} static('css/style.css') {% templatetag closevariable %}">
-	    
+
 	    <link rel="apple-touch-icon" type="image/png" href="/favicon/apple-touch-icon.png" sizes="180x180" >
 		<link rel="icon" type="image/png" href="/favicon/favicon-32x32.png" sizes="32x32">
 		<link rel="icon" type="image/png" href="/favicon/favicon-16x16.png" sizes="16x16">
@@ -23,7 +23,7 @@
 	</head>
 
 	<body>
-		{% templatetag openblock %} block content {% templatetag closeblock %} {% templatetag openblock %} endblock {% templatetag closeblock %}
+		{% templatetag openblock %} block content {% templatetag closeblock %}{% templatetag openblock %} endblock {% templatetag closeblock %}
 		{% templatetag openblock %} block extra_js {% templatetag closeblock %}{% templatetag openblock %} endblock {% templatetag closeblock %}
 	    <script src="{% templatetag openvariable %} static('js/main.js') {% templatetag closevariable %}"></script>
 	</body>
