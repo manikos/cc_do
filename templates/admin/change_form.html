@@ -4,5 +4,6 @@
 
 {% templatetag openblock %} block extrahead {% templatetag closeblock %}
 	{% templatetag openvariable %} block.super {% templatetag closevariable %}
-	<script src="{% templatetag openblock %} static 'js/adminPreviewImage.js' {% templatetag closeblock %}"></script>
+	<script type="text/javascript">const $ = django.jQuery;</script>
+	<script src="{% templatetag openblock %} static 'js/admin/adminPreviewImage.js' {% templatetag closeblock %}"></script>
 {% templatetag openblock %} endblock {% templatetag closeblock %}
