@@ -61,6 +61,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_jinja',
+    # 'easy_thumbnails',
     # 'compressor',
     # 'vimage.apps.VimageConfig',
 ]
@@ -70,7 +71,9 @@ PROJECT_APPS = [
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
-
+# INSTALLED_APPS = (
+#     MODELTRANSLATION_APP + DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
+# )
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
@@ -155,7 +158,8 @@ TEMPLATES = [
                 'translation': 'django.utils.translation',
                 'settings': 'django.conf.settings',
                 'lang_info': '{{ project_name }}.jinja2.methods.lang_info',  # optional
-                'app_urls': '{{ project_name }}.jinja2.methods.app_urls',  # optional
+                # 'app_urls': '{{ project_name }}.jinja2.methods.app_urls',  # optional
+                # 'thumbnail': '{{ project_name }}.jinja2.methods.thumbnail',  # optional
             },
             # values here MUST be path to a callable (i.e function)
             'filters': {
