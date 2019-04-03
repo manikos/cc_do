@@ -36,7 +36,7 @@ def thumbnail(source, **kwargs):
     """
     If easy_thumbnails is installed, use it with Jinja2 as follows:
 
-    {% set thumb = thumbnail(obj.ImageFieldName, size=(300, 300), quality=75) %}
+    {% templatetag openblock %} set thumb = thumbnail(obj.ImageFieldName, size=(300, 300), quality=75) {% templatetag closeblock %}
 	<img
 	  src="{{ thumb.url }}"
 	  alt="..."
