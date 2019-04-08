@@ -28,7 +28,9 @@ def app_urls():
     :return: dict
     """
     return {
-        url.name: reverse(url.name) for url in urlpatterns if hasattr(url, "name")
+        url.name: reverse(url.name)
+        for url in urlpatterns
+        if hasattr(url, "name")
     }
 
 
@@ -38,10 +40,10 @@ def thumbnail(source, **kwargs):
 
     {% templatetag openblock %} set thumb = thumbnail(obj.ImageFieldName, size=(300, 300), quality=75) {% templatetag closeblock %}
 	<img
-	  src="{{ thumb.url }}"
+	  src="{% templatetag openvariable %} thumb.url {% templatetag closevariable %}"
 	  alt="..."
-	  width="{{ thumb.width }}"
-	  height="{{ thumb.height }}"
+	  width="{% templatetag openvariable %} thumb.width {% templatetag closevariable %}"
+	  height="{% templatetag openvariable %} thumb.height {% templatetag closevariable %}"
 	>
 
 	Line 'kwargs["crop"] = ...' may be deleted if "crop" is not the default.

@@ -12,7 +12,7 @@
       changed_when: False
 
     - name: Install project requirements (under venv)
-      shell: pipenv install
+      shell: "pipenv install --python {{ PYENV_PYTHON_INTERPRETER }}"
       args:
         chdir: "{{ APP_PROJ_PATH }}"
         executable: /bin/bash
@@ -95,3 +95,7 @@
 #  file:
 #    dest: "{{ APP_PROJ_PATH }}/{{ APP }}/settings/secret.json"
 #    mode: 0640
+
+#- name: Debug  
+#   debug:
+#     msg: "{{ venv }}"

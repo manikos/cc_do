@@ -4,3 +4,4 @@ PYENV_REPO_NAME: https://github.com/pyenv/pyenv.git
 PYENV_DIR_NAME: .pyenv
 PYENV_VERSIONS_DIR_NAME: versions
 PYENV_DIR_PATH: "{{ ansible_env.HOME }}/{{ PYENV_DIR_NAME }}"  # ~/.pyenv
+PYENV_PYTHON_INTERPRETER: "{{ PYENV_DIR_PATH }}/versions/{{ PYTHON_VERSION }}/bin/python"

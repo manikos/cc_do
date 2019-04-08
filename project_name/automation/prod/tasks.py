@@ -4,15 +4,15 @@ from invoke import task, run
 from beauty_ocean.droplet.entry import create_droplet
 
 
-def create_the_droplet():
+def create_the_droplet(token):
     """
     Creates a DigitalOcean droplet and after finishing, returns
     a JSON response with the droplet's data.
 
-    :param c: invoke's context
+    :param str token: the Digital Ocean API token
     :return: a json response
     """
-    return create_droplet()
+    return create_droplet(token=token)
 
 
 def get_ip_address(droplet_data):
@@ -68,7 +68,7 @@ def droplet_adult(step=False):
 
 
 @task
-def deploy(c, step=False):
+def deploy(c, step=False, token=None):
     """
     Deploy the current app to Digital Ocean. It automatically creates the
     droplet, setup the server and deploy the app.
@@ -80,12 +80,12 @@ def deploy(c, step=False):
     be done manually.
 
     :param c:
+    :param str token: the Digital Ocean API token
     :param bool step: whether or not to run ansible command per step
     :return:
     """
-    res = create_the_droplet()
+    res = create_the_droplet(token=token)
     ip = get_ip_address(droplet_data=res)
     edit_hosts(ip_address=ip)
     droplet_birth(step=step)
     droplet_adult(step=step)
-

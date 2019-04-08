@@ -25,7 +25,7 @@
     group: "{{ user_name }}"
     mode: 0644
 
-- name: "Create app dir and tmp dir"
+- name: "Create app and tmp dirs"
   file:
     path: "{{ item }}"
     state: directory

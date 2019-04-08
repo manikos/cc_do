@@ -22,14 +22,24 @@
   register: public_key
   when: "'Your identification has been saved in' in result.stdout"
 
-# Unfortunately as of Jan 2019, BitBucket API v2 has removed ability to read/add access keys.
-# Thus, the "pause" module (in order to do it manually via the web).
-- pause:
-    prompt: |
-      Go to your bitbucket repo settings --> Access keys and add the public key manually.
-      Below is the public key (SKIP the <host>@<repo_name> part AND any spaces):
-      {{ public_key.stdout | trim }}
-  when: "'Your identification has been saved in' in result.stdout"
+- name: Check if deploy key already exists
+  uri:
+    url: "https://api.bitbucket.org/2.0/repositories/{{ bb_user }}/{{ BB_REPO_NAME }}/deploy-keys"
+    method: GET
+    user: "{{ bb_user }}"
+    password: "{{ bb_pwd }}"
+    force_basic_auth: yes
+  register: key_exists
+
+- name: "Upload server's public key to {{ BB_REPO_NAME }} repo as a deploy key"
+  uri:
+    url: "https://api.bitbucket.org/2.0/repositories/{{ bb_user }}/{{ BB_REPO_NAME }}/deploy-keys"
+    method: POST
+    user: "{{ bb_user }}"
+    password: "{{ bb_pwd }}"
+    force_basic_auth: yes
+    body: "key={{ public_key.stdout|urlencode }}&label={{ user_name }}_{{ BB_REPO_NAME }}"
+  when: not key_exists['json']['values']
 
 - name: Clone repo
   git:
@@ -41,21 +51,12 @@
   when: "'Your identification has been saved in' in result.stdout"
 
 
-#- name: Check if deploy key already exists
-#  uri:
-#    url: "https://api.bitbucket.org/1.0/repositories/{{ bb_user }}/{{ BB_REPO_NAME }}/deploy-keys"
-#    method: GET
-#    user: "{{ bb_user }}"
-#    password: "{{ bb_pwd }}"
-#    force_basic_auth: yes
-#  register: key_exists
+# Unfortunately as of Jan 2019, BitBucket API v2 has removed ability to read/add access keys.
+# Thus, the "pause" module (in order to do it manually via the web).
+#- pause:
+#    prompt: |
+#      Go to your bitbucket repo settings --> Access keys and add the public key manually.
+#      Below is the public key (SKIP the <host>@<repo_name> part AND any spaces):
+#      {{ public_key.stdout | trim }}
+#  when: "'Your identification has been saved in' in result.stdout"
 
-#- name: "Upload server's public key to {{ BB_REPO_NAME }} repo as a deploy key"
-#  uri:
-#    url: "https://api.bitbucket.org/1.0/repositories/{{ bb_user }}/{{ BB_REPO_NAME }}/deploy-keys"
-#    method: POST
-#    user: "{{ bb_user }}"
-#    password: "{{ bb_pwd }}"
-#    force_basic_auth: yes
-#    body: "key={{ bb_public_key.stdout|urlencode }}&label={{ user_name }}_{{ BB_REPO_NAME }}"
-#  when: not key_exists.json
