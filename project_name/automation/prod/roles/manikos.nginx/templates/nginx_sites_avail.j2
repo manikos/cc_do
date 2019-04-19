@@ -24,9 +24,10 @@ server {
     #location ~* .(woff|woff2|eot|ttf|svg|mp4|webm|jpg|JPG|jpeg|png|gif|ico|css|js)$ {
     #    expires 365d;
     #}
-    
-    location = /favicon {
-        alias {{ APP_PROJ_PATH }}/favicon;
+
+    location ~ ^/((?:android-chrome-|apple-touch-icon|browserconfig.xml|favicon|mstile|safari-pinned-tab.svg|site.webmanifest).*) {
+        #add_header X-debug-message "$1";  # for debug: add header that "prints" $1 variable
+        alias {{ APP_PROJ_PATH }}/static_root/img/favicons/$1;
         access_log off;
         log_not_found off;
     }
