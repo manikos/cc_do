@@ -61,7 +61,7 @@ def get_user_pwd():
 def get_repo_name():
     """Get APP name which will be used for the repo name as well"""
     with open('../prod/group_vars/all/constants.yml', 'r') as f:
-        obj = yaml.load(f)
+        obj = yaml.load(f, Loader=yaml.FullLoader)
         try:
             app_name = obj['APP']
         except KeyError:
