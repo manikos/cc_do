@@ -1,22 +1,24 @@
 ---
 
 - name: Install various packages
-  apt: name="{{ item }}" update_cache=yes
-  with_items:
-    - build-essential
-    - curl
-    - libssl-dev
-    - libbz2-dev
-    - libffi-dev
-    - libreadline-dev
-    - libsqlite3-dev
-    - libncurses5-dev
-    - libncursesw5-dev
-    - llvm
-    - sendmail
-    - tk-dev
-    - xz-utils
-    - wget
+  apt:
+    name:
+      - build-essential
+      - curl
+      - libssl-dev
+      - libbz2-dev
+      - libffi-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - libncurses5-dev
+      - libncursesw5-dev
+      - llvm
+      - sendmail
+      - tk-dev
+      - xz-utils
+      - wget
+    state: present
+    update_cache: yes
 
 - name: Modify sshd_config file as root
   replace:
