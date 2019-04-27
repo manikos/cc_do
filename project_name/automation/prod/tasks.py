@@ -46,10 +46,11 @@ def droplet_birth(step=False):
     :param bool step: whether or not to run ansible command per step
     :return: None
     """
-    if step:
-        run('ansible-playbook --step deploy_root.yml', pty=True)
-    else:
-        run('ansible-playbook deploy_root.yml', pty=True)
+    s = "--step" if step else ""
+    command = f"ansible-playbook {s} deploy_root.yml"
+    while True:
+        res = run(command, pty=True, warn=True)
+        if res.exited in [0, 99]: break
 
 
 def droplet_adult(step=False):
@@ -61,10 +62,11 @@ def droplet_adult(step=False):
     :return: None
     """
     # -K prompts for remote host user's sudo password
-    if step:
-        run('ansible-playbook -K --step deploy_user.yml', pty=True)
-    else:
-        run('ansible-playbook -K deploy_user.yml', pty=True)
+    s = "--step" if step else ""
+    command = f"ansible-playbook -K {s} deploy_user.yml"
+    while True:
+        res = run(command, pty=True, warn=True)
+        if res.exited in [0, 99]: break
 
 
 @task

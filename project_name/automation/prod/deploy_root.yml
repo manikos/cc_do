@@ -5,6 +5,12 @@
   gather_facts: no  # do not gather facts at birth since python is not installed
   remote_user: "{{ ROOT }}"
   pre_tasks:
+    - name: Check vault can be decrypted
+      check_mode: yes  # dry-run (simulate copy operation)
+      local_action:
+        module: copy
+        src: group_vars/all/vault.yml
+        dest: /home/nick/tmp/
     - name: Apt update && upgrade && install Python 2
       raw: apt-get -y update && apt-get -y upgrade && apt-get -y install python-dev python-pip
     - name: Upgrade pip to latest version
