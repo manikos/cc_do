@@ -65,7 +65,7 @@ ADMINS = (
 )
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
-# Specifies who should get broken link notification email. 
+# Specifies who should get broken link notification email.
 # This only works if the request has a referer.
 MANAGERS = ADMINS
 
@@ -97,7 +97,7 @@ LOGGING['handlers']['production_logfile'] = {
     'level': 'INFO',
     'filters': ['production_only'],
     'class': 'logging.handlers.RotatingFileHandler',
-    'filename': ROOT('logs/production.log'),
+    'filename': ROOT.joinpath("logs/production.log"),
     'maxBytes': 1024 * 1024,
     'backupCount': 3,
     'formatter': 'verbose'
@@ -107,7 +107,7 @@ LOGGING['handlers']['my_apps'] = {
     'level': 'INFO',
     'filters': ['production_only'],
     'class': 'logging.handlers.RotatingFileHandler',
-    'filename': ROOT('logs/my_apps.log'),
+    'filename': ROOT.joinpath("logs/my_apps.log"),
     'maxBytes': 1024 * 1024,
     'backupCount': 3,
     'formatter': 'verbose'

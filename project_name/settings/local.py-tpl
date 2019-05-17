@@ -57,7 +57,7 @@ LOGGING['handlers']['development_logfile'] = {
     'level': 'DEBUG',
     'filters': ['development_only'],
     'class': 'logging.handlers.RotatingFileHandler',
-    'filename': ROOT('logs/dev.log'),
+    'filename': ROOT.joinpath("logs/dev.log"),
     'maxBytes': 1024 * 1024,
     'backupCount': 3,
     'formatter': 'verbose'
