@@ -35,13 +35,13 @@ server {
     location /media {
         alias {{ APP_PROJ_PATH }}/media_root;
         access_log off;
-        add_header Cache-Control "max-age=2592000";
+        add_header Cache-Control "max-age=31536000";
     }
 
     location /static {
         alias {{ APP_PROJ_PATH }}/static_root;
         access_log off;
-        add_header Cache-Control "max-age=2592000";
+        add_header Cache-Control "max-age=31536000";
     }
 
     # regex must be inside "" because of the {} use. Will match either /{{ APP }}-admin-ns/ or /el/{{ APP }}-admin-ns/ or /en/{{ APP }}-admin-ns/ etc.

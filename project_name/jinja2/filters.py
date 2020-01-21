@@ -10,7 +10,7 @@ def remove_accent(word):
     Removes accents from the given word or phrase.
     If word is an instance of a class and is not a string type
     then, try to call it's __str__ (str()) method to get the word.
-    If fail, return '' (empty string).
+    If fail, return "" (empty string).
     Else, return the word or phrase as is if no accent presented.
     Else the word or phrase without accents.
     This is applied ONLY for the Greek language where small accented letters
@@ -37,31 +37,31 @@ def remove_accent(word):
             return ""
 
     replacement_table = {  # Πεζά με τόνο
-                           'ά': 'α',
-                           'έ': 'ε',
-                           'ή': 'η',
-                           'ί': 'ι',
-                           'ό': 'ο',
-                           'ύ': 'υ',
-                           'ώ': 'ω',
+                           "ά": "α",
+                           "έ": "ε",
+                           "ή": "η",
+                           "ί": "ι",
+                           "ό": "ο",
+                           "ύ": "υ",
+                           "ώ": "ω",
                            # Κεφαλαία με τόνο
-                           'Ά': 'Α',
-                           'Έ': 'Ε',
-                           'Ή': 'Η',
-                           'Ί': 'Ι',
-                           'Ό': 'Ο',
-                           'Ύ': 'Υ',
-                           'Ώ': 'Ω',
+                           "Ά": "Α",
+                           "Έ": "Ε",
+                           "Ή": "Η",
+                           "Ί": "Ι",
+                           "Ό": "Ο",
+                           "Ύ": "Υ",
+                           "Ώ": "Ω",
     }
     for letter in replacement_table:
         word = sub(letter, replacement_table.get(letter), word)
     return word
 
-# replacement_table = {u'\\u03ac': u'\\u03b1',
-    #                      u'\\u03ad': u'\\u03b5',
-    #                      u'\\u03ae': u'\\u03b7',
-    #                      u'\\u03af': u'\\u03b9',
-    #                      u'\\u03cc': u'\\u03bf',
-    #                      u'\\u03cd': u'\\u03c5',
-    #                      u'\\u03ce': u'\\u03c9'}
+# replacement_table = {u"\\u03ac": u"\\u03b1",
+    #                      u"\\u03ad": u"\\u03b5",
+    #                      u"\\u03ae": u"\\u03b7",
+    #                      u"\\u03af": u"\\u03b9",
+    #                      u"\\u03cc": u"\\u03bf",
+    #                      u"\\u03cd": u"\\u03c5",
+    #                      u"\\u03ce": u"\\u03c9"}
 

@@ -4,7 +4,7 @@ Documentation=https://uwsgi-docs.readthedocs.io/en/latest/index.html
 
 [Service]
 ExecStartPre=-/bin/bash -c 'mkdir -p {{ UWSGI_SOCKET_PATH }}; chown {{ user_name }}:{{ user_name }} {{ UWSGI_SOCKET_PATH }}; gpasswd -a {{ NGINX_USER }} {{ user_name }}'
-ExecStart=/bin/bash -c 'source {{ venv.stdout }}/bin/activate; uwsgi {{ UWSGI_DIR_PATH }}/{{ UWSGI_INI_NAME }}'
+ExecStart=/bin/bash -c 'source {{ VIRTUALENV_PATH }}/bin/activate; uwsgi {{ UWSGI_DIR_PATH }}/{{ UWSGI_INI_NAME }}'
 Restart=always
 StartLimitIntervalSec=0
 KillSignal=SIGQUIT

@@ -1,101 +1,45 @@
 ---
 
-- name: Django specific tasks
-  block:
-    - name: Check if venv already exists
-      shell: pipenv --venv
-      args:
-        chdir: "{{ APP_PROJ_PATH }}"
-        executable: /bin/bash
-      register: venv
-      failed_when: False
-      changed_when: False
+- name: Install project requirements
+  pip:
+    chdir: "{{ APP_PROJ_PATH }}"
+    virtualenv: "{{ VIRTUALENV_PATH }}"
+    virtualenv_command: pyenv
+    requirements: "{{ APP_PROJ_PATH }}/requirements/prod.txt"
 
-    - name: Install project requirements (under venv)
-      shell: "pipenv install --python {{ PYENV_PYTHON_INTERPRETER }}"
-      args:
-        chdir: "{{ APP_PROJ_PATH }}"
-        executable: /bin/bash
-      when: "'No virtualenv' in venv.stderr"
+- name: Run migrations (./manage.py migrate)
+  django_manage:
+    command: migrate
+    app_path: "{{ APP_PROJ_PATH }}"
+    virtualenv: "{{ VIRTUALENV_PATH }}"
 
-    - name: Run django migrations
-      shell: pipenv run python manage.py migrate
-      args:
-        chdir: "{{ APP_PROJ_PATH }}"
-      when: "'No virtualenv' in venv.stderr"
+- name: Ensure that static and media folder exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: 0755
+  with_items:
+    - "{{ APP_STATIC_PATH }}"
+    - "{{ APP_MEDIA_PATH }}"
 
-    - name: Ensure that static and media folder exist
-      file:
-        path: "{{ item }}"
-        state: directory
-        owner: "{{ user_name }}"
-        group: "{{ user_name }}"
-        mode: 0755
-      with_items:
-      - "{{ APP_STATIC_PATH }}"
-      - "{{ APP_MEDIA_PATH }}"
-      when: "'No virtualenv' in venv.stderr"
-
-    - name: Collect static files
-      shell: pipenv run python manage.py collectstatic --noinput
-      args:
-        chdir: "{{ APP_PROJ_PATH }}"
-      when: "'No virtualenv' in venv.stderr"
-  environment:
-    PATH: "{{ PIPENV_DIR_PATH }}:{{ ansible_env.PATH }}"
-    PYENV_ROOT: "{{ PYENV_DIR_PATH }}"
+- name: Collect static files
+  django_manage:
+    command: collectstatic
+    app_path: "{{ APP_PROJ_PATH }}"
+    virtualenv: "{{ VIRTUALENV_PATH }}"
+    link: yes
 
 - name: Remove read access of secret.json file from others (640)
   file:
     dest: "{{ APP_PROJ_PATH }}/{{ APP }}/settings/secret.json"
     mode: 0640
 
-
-#- name: Install project requirements (under venv)
-#  shell: pipenv install
-#  args:
-#    chdir: "{{ APP_PROJ_PATH }}"  # change to dir before run command
-#    executable: /bin/bash
-#  environment:
-#    PATH: "{{ PIPENV_DIR_PATH }}:{{ ansible_env.PATH }}"
-#    PYENV_ROOT: "{{ PYENV_DIR_PATH }}"
-#  register: result
-#  when: "'Creating a virtualenv' in result.stderr"
-#
-#- name: Run django migrations
-#  shell: pipenv run python manage.py migrate
-#  args:
-#    chdir: "{{ APP_PROJ_PATH }}"  # change to dir before run command
-#  environment:
-#    PATH: "{{ PIPENV_DIR_PATH }}:{{ ansible_env.PATH }}"
-#    PYENV_ROOT: "{{ PYENV_DIR_PATH }}"
-#  when: "'Creating a virtualenv' in result.stderr"
-#
-#- name: Ensure that static and media folder exist
-#  file:
-#    path: "{{ item }}"
-#    state: directory
-#    owner: "{{ user_name }}"
-#    group: "{{ user_name }}"
-#    mode: 0755
-#  with_items:
-#    - "{{ APP_STATIC_PATH }}"
-#    - "{{ APP_MEDIA_PATH }}"
-#  when: "'Creating a virtualenv' in result.stderr"
-#
-#- name: Collect static files
-#  shell: pipenv run python manage.py collectstatic --noinput
-#  args:
-#    chdir: "{{ APP_PROJ_PATH }}"  # change to dir before run command
-#  environment:
-#    PATH: "{{ PIPENV_DIR_PATH }}:{{ ansible_env.PATH }}"
-#    PYENV_ROOT: "{{ PYENV_DIR_PATH }}"
-#
-#- name: Remove read access of secret.json file from others (640)
-#  file:
-#    dest: "{{ APP_PROJ_PATH }}/{{ APP }}/settings/secret.json"
-#    mode: 0640
-
-#- name: Debug  
-#   debug:
-#     msg: "{{ venv }}"
+- name: Create .bash_aliases file
+  template:
+    src: bash_aliases.j2
+    dest: "{{ ansible_env.HOME }}/.bash_aliases"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: 0644

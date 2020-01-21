@@ -1,19 +1,21 @@
 ---
 
 - name: Install postgres required packages
-  apt: name={{ item }} update_cache=yes
-  with_items:
-    - postgresql
-    - libpq-dev
-    - python-psycopg2
-    - postgresql-client-common
-    - postgresql-client
-    - postgresql-contrib
-    # - libjpeg-dev
-    # - libjpeg62
-    # - libjpeg62-dev
-    # - zlib1g-dev
-    # - libfreetype6-dev
+  apt:
+    pkg:
+      - postgresql
+      - libpq-dev
+      - python3-psycopg2
+      - postgresql-client-common
+      - postgresql-client
+      - postgresql-contrib
+      # - libjpeg-dev
+      # - libjpeg62
+      # - libjpeg62-dev
+      # - zlib1g-dev
+      # - libfreetype6-dev
+    state: present
+    update_cache: yes
 
 - name: Ensure database is created
   postgresql_db:

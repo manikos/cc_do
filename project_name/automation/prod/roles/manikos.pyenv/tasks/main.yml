@@ -8,7 +8,7 @@
     group: "{{ user_name }}"
     mode: 0755
 
-- name: Install pyenv
+- name: Install pyenv + pyenv-virtualenv
   git:
     repo: "{{ item.repo }}"
     dest: "{{ item.dest }}"
@@ -16,6 +16,7 @@
     update: no
   with_items:
     - {repo: "{{ PYENV_REPO_NAME }}", dest: "{{ PYENV_DIR_PATH }}"}
+    - {repo: "{{ PYENV_VIRTUALENV_REPO_NAME }}", dest: "{{ PYENV_VIRTUALENV_DIR_PATH }}"}
 
 - name: "Put rendered pyenvrc.j2 local file to remote {{ PYENV_DIR_PATH }}/ as .pyenvrc file"
   template:
@@ -33,4 +34,10 @@
   shell: source {{ PYENV_DIR_PATH }}/.pyenvrc && pyenv install {{ PYTHON_VERSION }} && pyenv rehash
   args:
     creates: "{{ PYENV_DIR_PATH }}/versions/{{ PYTHON_VERSION }}/bin/python"  # a filename, when it already exists, this task will not run
+    executable: /bin/bash
+
+- name: Create virtual environment
+  shell: source {{ PYENV_DIR_PATH }}/.pyenvrc && pyenv virtualenv {{ PYTHON_VERSION }} {{ VIRTUALENV_NAME }}
+  args:
+    creates: "{{ PYENV_DIR_PATH }}/versions/{{ VIRTUALENV_NAME }}/bin/python"  # a filename, when it already exists, this step will not be run.
     executable: /bin/bash

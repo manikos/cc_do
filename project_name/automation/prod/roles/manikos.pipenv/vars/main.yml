@@ -1,3 +1,0 @@
----
-
-PIPENV_DIR_PATH: "{{ ansible_env.HOME }}/.local/bin"  # ~/.local/bin

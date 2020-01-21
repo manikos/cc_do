@@ -1,0 +1,4 @@
+-r main.txt
+
+uwsgi
+uwsgitop

@@ -1,7 +1,12 @@
 ---
 
+VIRTUALENV_NAME: "{{ APP }}_env"
 PYENV_REPO_NAME: https://github.com/pyenv/pyenv.git
+PYENV_VIRTUALENV_REPO_NAME: https://github.com/pyenv/pyenv-virtualenv.git
 PYENV_DIR_NAME: .pyenv
 PYENV_VERSIONS_DIR_NAME: versions
 PYENV_DIR_PATH: "{{ ansible_env.HOME }}/{{ PYENV_DIR_NAME }}"  # ~/.pyenv
-PYENV_PYTHON_INTERPRETER: "{{ PYENV_DIR_PATH }}/versions/{{ PYTHON_VERSION }}/bin/python"
+PYENV_PYTHON_INTERPRETER: "{{ PYENV_DIR_PATH }}/versions/{{ PYTHON_VERSION }}/bin/python"  # TODO: Check usage
+PYENV_VIRTUALENV_DIR_NAME: pyenv-virtualenv
+PYENV_VIRTUALENV_DIR_PATH: "{{ PYENV_DIR_PATH }}/plugins/{{ PYENV_VIRTUALENV_DIR_NAME }}"  # ~/.pyenv/plugins/pyenv-virtualenv
+VIRTUALENV_PATH: "{{ PYENV_DIR_PATH }}/{{ PYENV_VERSIONS_DIR_NAME }}/{{ VIRTUALENV_NAME }}"  # ~/.pyenv/versions/venv

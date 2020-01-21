@@ -1,7 +1,7 @@
 ---
 
 # TO BE CHANGED!
-PYTHON_VERSION: 3.6.5
+PYTHON_VERSION: 3.7.1
 EMAIL_FOR_FAIL2BAN: email_for_fail2ban@for.attack.notication  # used in jail.local.j2
 NETLOC_NAME: ''  # TODO: URL DOMAIN HERE i.e "example"
 NETLOC_TLD: ''  # TODO: TLD here i.e "com" or "net" etc

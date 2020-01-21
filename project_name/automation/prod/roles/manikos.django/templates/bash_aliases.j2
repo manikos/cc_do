@@ -1,0 +1,32 @@
+alias copy='xclip -sel clip'
+alias cd_proj='cd {{ APP_PROJ_PATH }}'
+alias activate_venv='source {{ VIRTUALENV_PATH }}/bin/activate'
+alias activate_proj='cd_proj && activate_venv'
+alias createsuperuser='activate_proj && python manage.py createsuperuser'
+
+# After each push, run below command to update project
+gpom() {
+    # cd to {{ PROJ_NAME }} && activate {{ VIRTUALENV_NAME }}
+    activate_proj
+
+    # pull from origin the latest changes
+    ssh-agent bash -c 'ssh-add {{ BB_ACCESS_KEYS_DIR_PATH }}/{{ BB_PRIVATE_KEY_NAME }}; git pull origin master'
+
+    # install (any potential) requirements
+    make install-deps-prod
+
+    # Run migrations
+    python manage.py migrate
+
+    # Run collectstatic
+    python manage.py collectstatic --noinput --link
+
+    # Restart uwsgi service (via systemd)
+    sudo systemctl restart uwsgi
+
+    # cd back to previous dir && deactivate {{ VIRTUALENV_NAME }}
+    cd -
+	deactivate
+}
+
+export -f gpom

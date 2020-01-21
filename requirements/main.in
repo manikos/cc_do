@@ -1,0 +1,13 @@
+Django<3
+Jinja2
+django-jinja
+django-modeltranslation
+Pillow
+psycopg2-binary
+easy-thumbnails
+#django-admin-sortable2
+#django-select2
+#django-summernote
+#django-filer
+#django_compressor
+#django-vimage

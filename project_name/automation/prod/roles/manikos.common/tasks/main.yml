@@ -9,14 +9,6 @@
   lineinfile: dest="{{ ansible_env.HOME }}/.bashrc"
               line="export PS1=\"\[\033[01;33m\]\u@\h\[\033[01;34m\] \w\$\[\033[00m\] \""
 
-- name: Create .bash_aliases file
-  template:
-    src: bash_aliases.j2
-    dest: "{{ ansible_env.HOME }}/.bash_aliases"
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: 0644
-
 - name: Create .vimrc file
   copy:
     src: vimrc

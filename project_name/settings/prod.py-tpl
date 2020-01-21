@@ -11,13 +11,13 @@ DEBUG = False
 
 # ALLOWED HOSTS
 # TODO: Change ALLOWED_HOSTS setting (optional)
-ALLOWED_HOSTS = ['{{ project_name }}.com', 'www.{{ project_name }}.com']
+ALLOWED_HOSTS = ["{{ project_name }}.com", "www.{{ project_name }}.com"]
 
 
 # TODO: SWITCH ON OR OFF BELOW SECURITY SETTINGS (OR REMOVE/ADD MORE)
 # https://docs.djangoproject.com/en/dev/ref/settings/#security
 CSRF_COOKIE_HTTPONLY = True
-X_FRAME_OPTIONS = 'DENY'
+X_FRAME_OPTIONS = "DENY"
 # CSRF_COOKIE_SECURE = True
 # SESSION_COOKIE_SECURE = True
 SECURE_BROWSER_XSS_FILTER = True
@@ -29,37 +29,37 @@ SECURE_BROWSER_XSS_FILTER = True
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': get_secret('DJANGO_DATABASE_NAME'),
-        'USER': get_secret('DJANGO_DATABASE_USER'),
-        'PASSWORD': get_secret('DJANGO_DATABASE_PWD'),
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": get_secret("DJANGO_DATABASE_NAME"),
+        "USER": get_secret("DJANGO_DATABASE_USER"),
+        "PASSWORD": get_secret("DJANGO_DATABASE_PWD"),
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
     }
 }
 
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = get_secret('EMAIL_HOST')
-EMAIL_PORT = get_secret('EMAIL_PORT')
-EMAIL_HOST_USER = get_secret('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = str(get_secret('EMAIL_HOST_PASSWORD'))
+EMAIL_HOST = get_secret("EMAIL_HOST")
+EMAIL_PORT = get_secret("EMAIL_PORT")
+EMAIL_HOST_USER = get_secret("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = str(get_secret("EMAIL_HOST_PASSWORD"))
 
 # default email address to use for various automated messages.
 # Does NOT include error messages sent to ADMINS & MANAGERS
-DEFAULT_FROM_EMAIL = get_secret('DEFAULT_FROM_EMAIL')
+DEFAULT_FROM_EMAIL = get_secret("DEFAULT_FROM_EMAIL")
 
 # The email address where the error messages (500) come from,
 # such as those sent to ADMINS & MANAGERS
-SERVER_EMAIL = get_secret('SERVER_EMAIL')
+SERVER_EMAIL = get_secret("SERVER_EMAIL")
 
 
 # ADMINS/MANAGERS CONFIGURATION
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 
 # People who get email for 500 error (unhandled exception has been raised)
-ADMIN_EMAIL = get_secret('ADMIN_EMAIL')
+ADMIN_EMAIL = get_secret("ADMIN_EMAIL")
 ADMINS = (
     (author, ADMIN_EMAIL),
 )
@@ -71,45 +71,45 @@ MANAGERS = ADMINS
 
 
 # GOOGLE MAPS API KEY
-GOOGLE_MAPS_API_KEY = get_secret('GOOGLE_MAPS_API_KEY')
+GOOGLE_MAPS_API_KEY = get_secret("GOOGLE_MAPS_API_KEY")
 
 
 # ADMIN URL SETTINGS
 # TODO: Set it also inside automation/prod/roles/manikos.nginx/templates/nginx_sites_avail.j2
-MY_ADMIN_URL = get_secret('ADMIN_URL')
+MY_ADMIN_URL = get_secret("ADMIN_URL")
 
 
 # STATICFILES_FINDERS = [
-#     'django.contrib.staticfiles.finders.FileSystemFinder',
-#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#     'compressor.finders.CompressorFinder',
+#     "django.contrib.staticfiles.finders.FileSystemFinder",
+#     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+#     "compressor.finders.CompressorFinder",
 # ]
 COMPRESS_ENABLED = True  # defaults to NOT DEBUG, but declared here explicit
 COMPRESS_URL = STATIC_URL  # defaults to STATIC_URL, but declared here explicit
 COMPRESS_ROOT = STATIC_ROOT  # defaults to STATIC_ROOT, but declared here explicit
-COMPRESS_OUTPUT_DIR = 'compressor'
-COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter',
-                        'compressor.filters.cssmin.rCSSMinFilter']
+COMPRESS_OUTPUT_DIR = "compressor"
+COMPRESS_CSS_FILTERS = ["compressor.filters.css_default.CssAbsoluteFilter",
+                        "compressor.filters.cssmin.rCSSMinFilter"]
 COMPRESS_OFFLINE = False  # defaults to False, but declared here explicit
 
 
-LOGGING['handlers']['production_logfile'] = {
-    'level': 'INFO',
-    'filters': ['production_only'],
-    'class': 'logging.handlers.RotatingFileHandler',
-    'filename': ROOT.joinpath("logs/production.log"),
-    'maxBytes': 1024 * 1024,
-    'backupCount': 3,
-    'formatter': 'verbose'
+LOGGING["handlers"]["production_logfile"] = {
+    "level": "INFO",
+    "filters": ["production_only"],
+    "class": "logging.handlers.RotatingFileHandler",
+    "filename": ROOT.joinpath("logs/production.log"),
+    "maxBytes": 1024 * 1024,
+    "backupCount": 3,
+    "formatter": "verbose"
 }
 
-LOGGING['handlers']['my_apps'] = {
-    'level': 'INFO',
-    'filters': ['production_only'],
-    'class': 'logging.handlers.RotatingFileHandler',
-    'filename': ROOT.joinpath("logs/my_apps.log"),
-    'maxBytes': 1024 * 1024,
-    'backupCount': 3,
-    'formatter': 'verbose'
+LOGGING["handlers"]["my_apps"] = {
+    "level": "INFO",
+    "filters": ["production_only"],
+    "class": "logging.handlers.RotatingFileHandler",
+    "filename": ROOT.joinpath("logs/my_apps.log"),
+    "maxBytes": 1024 * 1024,
+    "backupCount": 3,
+    "formatter": "verbose"
 }
 

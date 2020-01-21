@@ -7,5 +7,5 @@ dependencies:
   - { role: manikos.ufw, become: yes }
   - { role: manikos.postgres, become: yes }
   - manikos.bitbucket
-  - manikos.django  # pyenv & pipenv roles are dependencies of this role
+  - manikos.django  # pyenv & pip_tools roles are dependencies of this role
   - manikos.uwsgi

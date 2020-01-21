@@ -1,0 +1,7 @@
+---
+
+- name: Install pip-tools (under virtual env)
+  pip:
+    name: pip-tools
+    virtualenv: "{{ VIRTUALENV_PATH }}"
+    virtualenv_command: pyenv

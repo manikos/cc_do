@@ -1,6 +1,10 @@
+from pathlib import Path
+import sys
 import json
 
 from invoke import task, run
+from invoke.runners import Result
+from invoke.exceptions import Failure
 from beauty_ocean.droplet.entry import create_droplet
 
 
@@ -50,7 +54,8 @@ def droplet_birth(step=False):
     command = f"ansible-playbook {s} deploy_root.yml"
     while True:
         res = run(command, pty=True, warn=True)
-        if res.exited in [0, 99]: break
+        if res.exited in [0, 99]:
+            break
 
 
 def droplet_adult(step=False):
@@ -66,28 +71,54 @@ def droplet_adult(step=False):
     command = f"ansible-playbook -K {s} deploy_user.yml"
     while True:
         res = run(command, pty=True, warn=True)
-        if res.exited in [0, 99]: break
+        if res.exited in [0, 99]:
+            break
+
+
+def add_server_public_key_to_known_hosts(ip):
+    known_hosts = Path.home() / ".ssh/known_hosts"
+    if not known_hosts.exists():
+        print(f"{known_hosts} does not exist!")
+        sys.exit()
+    command = f"ssh-keyscan -t ecdsa -H {ip}"
+    command_2 = f"{command} >> {known_hosts}"
+    res = Result()
+    msg = f"Adding public key of {ip} into {known_hosts}"
+    try:
+        while not res.stdout:
+            print(msg)
+            res = run(command, pty=True)
+            if res.stdout:
+                break
+        res_2 = run(command_2, pty=True)
+    except Failure as e:
+        print(f"Error while adding public key. {e}")
+        sys.exit()
+    else:
+        print("Successfully added!")
 
 
 @task
-def deploy(c, step=False, token=None):
+def droplet(c, token=None):
     """
-    Deploy the current app to Digital Ocean. It automatically creates the
-    droplet, setup the server and deploy the app.
-
-    Assumes the app is already pushed at BitBucket. Later, in an Ansible
-    action, you'll be asked to paste remote host's (droplet's) public key
-    to the app's BitBucket repo ssh "Access keys". That's a feature that
-    BitBucket API v1 had, but in v2 have removed. Thus, this procedure must
-    be done manually.
-
+    Creates the droplet and sets the IP address inside hosts.
     :param c:
     :param str token: the Digital Ocean API token
-    :param bool step: whether or not to run ansible command per step
-    :return:
     """
     res = create_the_droplet(token=token)
     ip = get_ip_address(droplet_data=res)
     edit_hosts(ip_address=ip)
-    droplet_birth(step=step)
+    add_server_public_key_to_known_hosts(ip)
+
+
+@task
+def deploy(c, step=False):
+    """
+    Deploy the current app to Digital Ocean. It automatically setup the server
+    and deploy the app. Assumes the app is already pushed at BitBucket.
+
+    :param c:
+    :param bool step: whether or not to run ansible command per step
+    """
+    # droplet_birth(step=step)
     droplet_adult(step=step)

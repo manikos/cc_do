@@ -11,9 +11,5 @@
         module: copy
         src: group_vars/all/vault.yml
         dest: /home/nick/tmp/
-    - name: Apt update && upgrade && install Python 2
-      raw: apt-get -y update && apt-get -y upgrade && apt-get -y install python-dev python-pip
-    - name: Upgrade pip to latest version
-      pip: name=pip state=latest
   roles:
     - manikos.birth

@@ -2,18 +2,6 @@
 
 # uwsgi[top] are assumed already installed from within project's Pipfile
 
-- name: Get venv name
-  shell: pipenv --venv
-  args:
-    chdir: "{{ APP_PROJ_PATH }}"
-    executable: /bin/bash
-  register: venv
-  failed_when: False
-  changed_when: False
-  environment:
-    PATH: "{{ PIPENV_DIR_PATH }}:{{ ansible_env.PATH }}"
-    PYENV_ROOT: "{{ PYENV_DIR_PATH }}"
-
 - name: "Create necessary uwsgi dirs"
   file:
     path: "{{ item }}"

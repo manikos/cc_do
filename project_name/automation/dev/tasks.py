@@ -60,10 +60,10 @@ def get_user_pwd():
 
 def get_repo_name():
     """Get APP name which will be used for the repo name as well"""
-    with open('../prod/group_vars/all/constants.yml', 'r') as f:
+    with open("../prod/group_vars/all/constants.yml", "r") as f:
         obj = yaml.load(f, Loader=yaml.FullLoader)
         try:
-            app_name = obj['APP']
+            app_name = obj["APP"]
         except KeyError:
             err = "No 'APP' key found inside 'constants.yml file!"
             raise ValueError(err) from None
@@ -78,8 +78,8 @@ def usr_repo():
     :return: dict
     """
     return {
-        'bb_usr': get_user_name(),
-        'bb_repo': get_repo_name(),
+        "bb_usr": get_user_name(),
+        "bb_repo": get_repo_name(),
     }
 
 
@@ -138,14 +138,14 @@ def git_init_push(bb_usr, bb_repo):
     :return: None
     """
     ssh_url = f"ssh://git@bitbucket.org/{bb_usr}/{bb_repo}.git"
-    with chdir('../../..'):  # go up 3 times, to be in the project root
-        run('git init')
-        run('git add --all')
+    with chdir("../../.."):  # go up 3 times, to be in the project root
+        run("git init")
+        run("git add --all")
 
-        run('git remote add origin {}'.format(ssh_url))
+        run("git remote add origin {}".format(ssh_url))
         run('git commit -m "Initial commit"')
 
-        run('git push -u origin master')
+        run("git push -u origin master")
     print("Push successful :)")
 
 
@@ -159,8 +159,8 @@ def git(c, create=False, delete=False):
     inv git --create --delete (will create and then delete the repo)
     """
     data = usr_repo()
-    bb_usr = data['bb_usr']
-    bb_repo = data['bb_repo']
+    bb_usr = data["bb_usr"]
+    bb_repo = data["bb_repo"]
     bb_pwd = get_user_pwd()
 
     if create:
@@ -178,16 +178,16 @@ def install_required_packages():
     :return: None
     """
     confirm = input(f"Install required packages [y, N]{PROMPT} ") or "n"
-    if confirm == 'n':
+    if confirm == "n":
         return
-    if confirm == 'y':
+    if confirm == "y":
         postgres_packages = [
-            'postgresql', 'libpq-dev', 'python-psycopg2',
-            'postgresql-client-common',
-            'postgresql-client', 'postgresql-contrib', 'pgadmin3',
+            "postgresql", "libpq-dev", "python3-psycopg2",
+            "postgresql-client-common",
+            "postgresql-client", "postgresql-contrib", "pgadmin3",
         ]
-        run('sudo apt-get update > /dev/null')
-        run('sudo apt-get install -y {}'.format(' '.join(postgres_packages)))
+        run("sudo apt-get update > /dev/null")
+        run("sudo apt-get install -y {}".format(" ".join(postgres_packages)))
         print(f"Packages installed successfully!")
 
 
@@ -209,7 +209,7 @@ def create_pg_user(user_name):
         #   123456 --hashed--> md575bd30c0d7a5d43d28f465a53cc8c340
         # The following CREATE ROLE command is identical to this IF given
         # password is 123456:
-        #   'sudo -u postgres createuser -d -E -P {}'.format(env.db_owner)
+        #   "sudo -u postgres createuser -d -E -P {}".format(env.db_owner)
         run(f'sudo -u postgres psql -c "CREATE ROLE {user_name} ENCRYPTED '
             'PASSWORD \'md575bd30c0d7a5d43d28f465a53cc8c340\' NOSUPERUSER '
             'CREATEDB NOCREATEROLE INHERIT LOGIN;"')

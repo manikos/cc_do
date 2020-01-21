@@ -4,8 +4,8 @@ from .base import *
 
 
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-MY_ADMIN_URL = 'admin'
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+MY_ADMIN_URL = "admin"
 
 
 def q():
@@ -14,52 +14,52 @@ def q():
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '{{ project_name }}',
-        'USER': 'username_here',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "{{ project_name }}",
+        "USER": "username_here",
+        "PASSWORD": "123456",
+        "HOST": "localhost",
     }
 }
 
-if 'test' in argv:
-    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+if "test" in argv:
+    DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"
 
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-INTERNAL_IPS
-INTERNAL_IPS = ('127.0.0.1',)
+INTERNAL_IPS = ("127.0.0.1",)
 
 
 # EMAIL_USE_TLS = True
-# EMAIL_HOST = get_secret('EMAIL_HOST')
-# EMAIL_PORT = get_secret('EMAIL_PORT')
-# EMAIL_HOST_USER = get_secret('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = str(get_secret('EMAIL_HOST_PASSWORD'))
+# EMAIL_HOST = get_secret("EMAIL_HOST")
+# EMAIL_PORT = get_secret("EMAIL_PORT")
+# EMAIL_HOST_USER = get_secret("EMAIL_HOST_USER")
+# EMAIL_HOST_PASSWORD = str(get_secret("EMAIL_HOST_PASSWORD"))
 
 # default email address to use for various automated messages.
 # Does NOT include error messages sent to ADMINS & MANAGERS
-# DEFAULT_FROM_EMAIL = get_secret('DEFAULT_FROM_EMAIL')
+# DEFAULT_FROM_EMAIL = get_secret("DEFAULT_FROM_EMAIL")
 
 
-GOOGLE_MAPS_API_KEY = ''  # TODO: API KEY HERE (optional)
+GOOGLE_MAPS_API_KEY = ""  # TODO: API KEY HERE (optional)
 
 
 COMPRESS_OFFLINE = False
 COMPRESS_URL = STATIC_URL
 COMPRESS_ROOT = STATIC_ROOT
-COMPRESS_OUTPUT_DIR = 'compress'
-COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter',
-                        'compressor.filters.cssmin.CSSMinFilter']
+COMPRESS_OUTPUT_DIR = "compress"
+COMPRESS_CSS_FILTERS = ["compressor.filters.css_default.CssAbsoluteFilter",
+                        "compressor.filters.cssmin.CSSMinFilter"]
 
 
-LOGGING['handlers']['development_logfile'] = {
-    'level': 'DEBUG',
-    'filters': ['development_only'],
-    'class': 'logging.handlers.RotatingFileHandler',
-    'filename': ROOT.joinpath("logs/dev.log"),
-    'maxBytes': 1024 * 1024,
-    'backupCount': 3,
-    'formatter': 'verbose'
+LOGGING["handlers"]["development_logfile"] = {
+    "level": "DEBUG",
+    "filters": ["development_only"],
+    "class": "logging.handlers.RotatingFileHandler",
+    "filename": ROOT.joinpath("logs/dev.log"),
+    "maxBytes": 1024 * 1024,
+    "backupCount": 3,
+    "formatter": "verbose"
 }
 
